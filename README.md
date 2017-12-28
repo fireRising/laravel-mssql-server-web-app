@@ -3,7 +3,8 @@ Project Beauty Salon<br>
 Database: SQL Server
 <br>
 Available roles:
-<li>
-  <ul>Manager</ul>
-  <ul>Administrator</ul>
-  <ul>Customer</ul>
+<ul>
+  <li>Manager</li>
+  <li>Administrator</li>
+  <li>Customer</li>
+  </ul>
