@@ -1,6 +1,6 @@
 # laravel_beauty_salon
 Project Beauty Salon<br>
-Database: SQL Server
+Database: SQL Server(MS SQL)
 <br><br>
 <h4>Available roles:</h4>
 <ul>
