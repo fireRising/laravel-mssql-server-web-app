@@ -1,10 +1,7 @@
 # Laravel Project with MS SQL Server Integration
-<h4>Language: PHP 7.2</h4>
-<br>
-Framework: Laravel 5.5
-<br>
-Database: MS SQL Server
-<br>
+<h4>Language</h4>: PHP 7.2<br>
+<h4>Framework</h4>: Laravel 5.5<br>
+<h4>Database</h4>: MS SQL Server<br>
 Laravel Documentation: https://laravel.com/docs/5.5
 <br>
 Laravel lessons: https://laracasts.com/
