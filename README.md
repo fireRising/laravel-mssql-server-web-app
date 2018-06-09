@@ -1,7 +1,7 @@
 # laravel_beauty_salon
-Language: PHP 7.1
-Framework: Laravel 5.6
-Database: MS SQL Server
+Language: PHP 7.1<br>
+Framework: Laravel 5.6<br>
+Database: MS SQL Server<br>
 <br><br>
 <h4>Available roles:</h4>
 <ul>
