@@ -1,7 +1,7 @@
 # laravel_beauty_salon
-Language: PHP 7.1<br>
-Framework: Laravel 5.6<br>
-Database: MS SQL Server<br>
+Language: PHP 7.2<br>
+Framework: Laravel 5.5<br>
+Database: MS SQL Server
 <br><br>
 <h4>Available roles:</h4>
 <ul>
@@ -9,3 +9,11 @@ Database: MS SQL Server<br>
   <li>Administrator</li>
   <li>Customer</li>
 </ul>
+
+<br>
+Laravel Documentation: https://laravel.com/docs/5.5
+<br>
+Laravel lessons: https://laracasts.com/
+<br>
+Installation of a driver sqlsrv for connect PHP with MS SQL Server: https://docs.microsoft.com/ru-ru/sql/connect/php/microsoft-php-driver-for-sql-server
+<br>
