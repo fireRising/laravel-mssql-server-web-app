@@ -12,7 +12,7 @@
 
 <h4>Get Started</h4>
 <ol>
-  <li>Install web server(best with pre-installed PHP: WAMP, MAMP, LAMP)</li>
+  <li>Follow the instructions https://laravel.com/docs/5.6/installation</li>
   <li>Change the database connection info to yours in the file .env in the root of the project</li>
   <li>Install the sqlsrv driver for PHP</li>
   <li>Make the migration of the DB Beauty_salon files from file /DATABASE_FILES/Beauty_salon_DB.rar to your local MS SQL Server</li>
