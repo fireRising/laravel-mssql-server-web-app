@@ -24,5 +24,5 @@
   <li>Administrator</li>
   <li>Customer</li>
 </ul>
-<b>Registration only works for the Customer role</b><br>
-<b>Passwords for the other roles in the /DATABASE_FILES/passwords.txt file</b><br>
+<b>Using the database and the table USERS you choose the role of the newly registered user</b><br>
+<b>Passwords for the already registered users in the /DATABASE_FILES/passwords.txt file</b><br>
