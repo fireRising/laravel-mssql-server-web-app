@@ -15,14 +15,6 @@
 </ul>
 
 <h4>Get Started</h4>
-1. Для того, чтобы развернуть проект требуется установить любой веб-сервер, лучше сборки с установленным PHP(version 7.2) CLI (MAMP, WAMP, LAMP)
-2. Запустить веб-сервер и проверить его работу, зайдя на localhost. Остановить веб-сервер
-3. В файле .env( со строки 9) в корне проекта изменить подключение к SQL SERVER на свои данные
-4. Установить драйвер sqlsrv для подключения к MS SQL с помощью PHP, гайд - https://docs.microsoft.com/ru-ru/sql/connect/php/microsoft-php-driver-for-sql-server
-5. Мигрировать в свой SQL SERVER базу данных Beauty_salon
-6. Сделай деплой папки проекта на localhost
-7. Пользоваться
-
 <ol>
   <li>Install web server(best with pre-installed PHP: WAMP, MAMP, LAMP)</li>
   <li>Change the database connection info to yours in the file .env in the root of the project</li>
