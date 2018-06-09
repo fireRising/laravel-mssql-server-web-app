@@ -2,7 +2,7 @@
 Language: PHP 7.2<br>
 Framework: Laravel 5.5<br>
 Database: MS SQL Server
-<br><br>
+<br>
 <h4>Available roles:</h4>
 <ul>
   <li>Manager</li>
