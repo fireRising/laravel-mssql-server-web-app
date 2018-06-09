@@ -7,12 +7,6 @@
 <b>Laravel Lessons:</b> https://laracasts.com/<br>
 <b>Installation of a driver sqlsrv for connect PHP with MS SQL Server:</b> https://docs.microsoft.com/ru-ru/sql/connect/php/microsoft-php-driver-for-sql-server
 <br>
-<h4>Available roles:</h4>
-<ul>
-  <li>Manager</li>
-  <li>Administrator</li>
-  <li>Customer</li>
-</ul>
 
 <h4>Get Started</h4>
 <ol>
@@ -23,3 +17,12 @@
   <li>Deploy the project folder to the localhost</li>
   <li>Enjoy!</li>
 </ol>
+
+<h4>Available roles:</h4>
+<ul>
+  <li>Manager</li>
+  <li>Administrator</li>
+  <li>Customer</li>
+</ul>
+<b>Registration only for the customer role</b><br>
+<b>Password for the other roles in the /DATABASE_FILES/passwords.txt file</b><br>
