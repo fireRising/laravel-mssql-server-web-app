@@ -1,4 +1,4 @@
-# laravel_beauty_salon
+# Laravel Project with MS SQL Server Integration
 Language: PHP 7.2<br>
 Framework: Laravel 5.5<br>
 Database: MS SQL Server
