@@ -1,0 +1,5 @@
+1. Дата записи не может быть меньше текущей даты и времени
+ADD CONSTRAINT CHK_Visits_date CHECK (DATEADD(HOUR, DATEPART(HOUR, time_visit),CONVERT(DATETIME, date_visit, 20)) >= CONVERT(DATETIME, GETDATE())
+//( date_visit >= GETDATE())
+2. Цена не может быть меньше 0
+ALTER TABLE Services ADD CONSTRAINT CHK_Price CHECK (price >= 0)

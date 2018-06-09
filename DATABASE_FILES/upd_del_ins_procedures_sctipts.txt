@@ -1,0 +1,73 @@
+Пример на одной таблице
+Таблица Visits
+1) Insert
+CREATE PROCEDURE dbo.INS_Visits (
+       @customer_id INT,
+       @service_id INT,
+       @employee_id  INT,
+       @date_visit DATE,
+       @time_visit TIME(0),
+       @service_prov NVARCHAR(3)
+  )
+AS 
+BEGIN 
+    SET NOCOUNT ON 
+
+     INSERT INTO Visits
+          ( 
+            customer_id,
+            service_id,
+            employee_id,
+            date_visit,
+            time_visit,
+            service_provided
+          ) 
+     VALUES 
+          ( 
+             @customer_id ,
+             @service_id,
+             @employee_id,
+             @date_visit,
+             @time_visit,
+             @service_prov
+         ) 
+
+END
+
+2) Update
+CREATE PROCEDURE dbo.UPD_Visits_PK (
+       @v_id INT,
+       @customer_id INT = NULL,
+       @service_id INT = NULL,
+       @employee_id INT = NULL,
+       @date_visit DATE = NULL,
+       @time_visit TIME(0) = NULL,
+       @service_provided NVARCHAR(3) = NULL  
+  )
+AS 
+BEGIN 
+     SET NOCOUNT ON 
+      UPDATE dbo.Visits
+      SET 
+            customer_id = ISNULL(@customer_id, v.customer_id),
+            service_id = ISNULL(@service_id, v.service_id),
+            employee_id = ISNULL(@employee_id, v.employee_id),
+            date_visit = ISNULL(@date_visit, v.date_visit),
+            time_visit = ISNULL(@time_visit, v.time_visit),
+            service_provided = ISNULL(@service_provided, v.service_provided)
+      FROM   dbo.Visits v
+      WHERE  
+      v.id = @v_id
+
+END
+GO
+
+3) Delete
+CREATE PROCEDURE dbo.DEL_Visits_PK @v_id INT
+AS
+BEGIN
+  SET NOCOUNT ON
+
+  DELETE FROM dbo.Visits
+  WHERE id = @v_id
+END

@@ -1,0 +1,116 @@
+
+1) Табличная функция(Поиск занятых мастеров, можно как по ФИО так и общий список, в соответствии с датой и временем, видом услуги)
+ALTER FUNCTION dbo.GetMasterOnTimeDateVisit (@groupServices NVARCHAR(50),
+@services NVARCHAR(50),
+@freeDate DATE,
+@freeTime TIME(0),
+@firstNameEmployee NVARCHAR(50) = NULL,
+@lastNameEmployee NVARCHAR(50) = NULL,
+@middleNameEmployee NVARCHAR(50) = NULL)
+RETURNS TABLE
+AS
+  RETURN
+  SELECT
+    E.last_name
+   ,E.first_name
+   ,E.middle_name
+  FROM Employees e
+  JOIN Services_Group_Positions sgp
+    ON e.position_id = sgp.position_id
+      AND E.first_name = ISNULL(@firstNameEmployee, E.first_name)
+      AND E.last_name = ISNULL(@lastNameEmployee, E.last_name)
+      AND E.middle_name = ISNULL(@middleNameEmployee, E.middle_name)
+  JOIN Services_Group sg
+    ON sgp.group_id = sg.id
+      AND sg.name = @groupServices
+  JOIN Services s
+    ON sg.id = s.group_id
+      AND s.name = @services
+  JOIN Visits v
+    ON v.date_visit = @freeDate
+      AND v.time_visit = @freeTime
+      AND v.employee_id = e.id
+
+2) Табличная функция(Выводит список свободных мастеров)
+ALTER FUNCTION dbo.GetFreeMasters (@groupServices NVARCHAR(50),
+@services NVARCHAR(50),
+@freeDate DATE,
+@freeTime TIME(0))
+
+RETURNS @freeMasters TABLE (
+  first_name NVARCHAR(50)
+ ,last_name NVARCHAR(50)
+ ,middle_name NVARCHAR(50)
+)
+AS
+BEGIN
+  DECLARE @first_name_master NVARCHAR(50)
+         ,@last_name_master NVARCHAR(50)
+         ,@middle_name_master NVARCHAR(50)
+         ,@id INT = 1
+
+  WHILE EXISTS (SELECT
+      e.id
+    FROM Employees e
+    WHERE e.id = @id)
+  BEGIN
+
+  SELECT
+    @first_name_master = E.first_name
+   ,@last_name_master = E.last_name
+   ,@middle_name_master = E.middle_name
+  FROM Employees E
+  JOIN Services_Group_Positions sgp
+    ON sgp.id = E.position_id
+  JOIN Services_Group sg
+    ON sgp.group_id = sg.id
+      AND sg.name = @groupServices
+  JOIN Staff_Schedule SS
+    ON SS.employee_id = E.id
+      AND SS.day_of_week = DATEPART(WEEKDAY, @freeDate)
+      AND @freeTime BETWEEN SS.start_time AND SS.end_time
+  WHERE E.id = @id
+
+  IF NOT EXISTS (SELECT
+        *
+      FROM dbo.GetMasterOnTimeDateVisit(@groupServices, @services, @freeDate, @freeTime, @first_name_master, @last_name_master, @middle_name_master) gmotdv)
+    AND @first_name_master IS NOT NULL
+    INSERT @freeMasters
+      SELECT
+        @first_name_master
+       ,@last_name_master
+       ,@middle_name_master
+
+  SET @id = @id + 1
+  END
+  RETURN
+END
+
+3) Табличная функция(Список клиентов, которые записаны)
+ALTER FUNCTION dbo.VisitsToMaster (@firstNameEmployee NVARCHAR(50),
+@lastNameEmployee NVARCHAR(50),
+@middleNameEmployee NVARCHAR(50),
+@date DATE = NULL
+  )
+RETURNS TABLE
+AS
+  RETURN
+  SELECT
+    s.name
+   ,c.first_name
+   ,c.last_name
+   ,c.middle_name
+   ,v.date_visit
+   ,v.time_visit
+  FROM Customers c
+  JOIN Visits v
+    ON c.id = v.customer_id
+      AND v.service_provided = 'No' AND v.date_visit = ISNULL(@date, v.date_visit)
+  JOIN Employees e
+    ON e.last_name = @lastNameEmployee
+      AND e.first_name = @firstNameEmployee
+      AND e.middle_name = @middleNameEmployee
+      AND e.id = v.employee_id
+  JOIN Services s
+    ON s.id = v.service_id
+

@@ -1,0 +1,20 @@
+Триггер на таблицу Visits действие - UPDATE
+Логика работы: при попытке установить значение 'Yes' атрибуту 'Service_provided', если 'date_visit' и 'time_visit' больше текущего времени, отменить изменение
+ALTER TRIGGER dbo.trigger_service_provided
+ON Visits
+AFTER UPDATE
+AS
+  IF UPDATE(service_provided)
+  BEGIN
+    DECLARE @check_date DATE
+           ,@check_service_value NVARCHAR(3)
+    SELECT
+      @check_date = date_visit
+     ,@check_service_value = service_provided
+    FROM INSERTED
+    IF (@check_service_value = 'Yes')
+    BEGIN
+      IF @check_date > GETDATE()
+        ROLLBACK
+    END
+  END

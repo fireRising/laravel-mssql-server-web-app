@@ -1,0 +1,49 @@
+1) Представление: Список всех услуг(Цены в РУБ и Долларах)
+Курс Доллара берется онлайн с помощью АПИ ЦБР
+ALTER VIEW dbo.AllServicesInfo
+AS
+SELECT
+  sg.name AS 'Group'
+ ,s.name AS 'Service'
+ ,s.price AS 'RUB'
+ ,dbo.RubToUSD(s.price) AS 'USD'
+ ,s.short_description AS 'Description'
+FROM Services_Group sg
+JOIN Services s
+  ON s.group_id = sg.id
+
+2) Представление: Расписание работы сотрудников
+ALTER VIEW dbo.Staff_Schedule_FIO
+AS
+SELECT
+  e.last_name
+ ,e.first_name
+ ,e.middle_name
+ ,e.phone
+ ,ss.day_of_week
+ ,ss.start_time
+ ,ss.end_time
+FROM Employees e
+JOIN Staff_Schedule ss
+  ON e.id = ss.employee_id
+
+
+3) Представление: Записи
+ALTER VIEW dbo.Visits_ALL
+AS
+SELECT
+  c.last_name AS CL
+ ,c.first_name AS CF
+ ,c.phone
+ ,s.name
+ ,e.last_name AS EL
+ ,e.first_name AS EF
+ ,v.date_visit
+ ,v.time_visit
+FROM Customers c
+JOIN Visits v
+  ON v.customer_id = c.id
+JOIN Services s
+  ON s.id = v.service_id
+JOIN Employees e
+  ON e.id = v.employee_id

@@ -1,0 +1,63 @@
+ALTER DATABASE Beauty_salon SET TRUSTWORTHY ON
+CREATE ASSEMBLY ParseDollarRate FROM 'C:\Users\wfhm9\Desktop\Projects_C#\CLRFunctionMSSQL\Database\Database\obj\Debug\DataBase.dll'
+WITH PERMISSION_SET = UNSAFE
+GO
+CREATE FUNCTION RubToUSD(@count_rubs INT)
+RETURNS DECIMAL(10,2)
+AS EXTERNAL NAME [ParseDollarRate].[UserDefinedFunctions].[ParseDollarRate]
+
+Каждый раз при вызове функции идет обращение к API ЦБР(ответ приходит в виде xml документа) и извлекается текущий курс доллара
+
+using System;
+using System.Xml;
+using System.Data;
+using System.Data.SqlClient;
+using System.Data.SqlTypes;
+using Microsoft.SqlServer.Server;
+
+public partial class UserDefinedFunctions
+{
+    [Microsoft.SqlServer.Server.SqlFunction]
+    public static SqlDecimal ParseDollarRate(SqlInt32 how_much_rub)
+    {
+        String USD_exchange_rate = "";
+        String URL = "http://www.cbr.ru/scripts/XML_daily.asp";
+        XmlTextReader reader = new XmlTextReader(URL);
+        Double result = 0;
+        while (reader.Read())
+        {
+            if (reader.NodeType == XmlNodeType.Element)
+                if (reader.Name == "Valute")
+                {
+                    if (reader.HasAttributes)
+                    {
+                        while (reader.MoveToNextAttribute())
+                        {
+                            if (reader.Name == "ID")
+                            {
+                                if (reader.Value == "R01235")
+                                {
+                                    reader.MoveToElement();
+                                    while (reader.Read())
+                                    {
+                                        if (reader.Name == "Value")
+                                        {
+                                            USD_exchange_rate = reader.ReadInnerXml();
+                                            break;
+                                        }
+                                    }
+
+                                }
+
+                            }
+                        }
+                    }
+                }
+        }
+
+        result = Convert.ToDouble(how_much_rub.ToString()) / Convert.ToDouble(USD_exchange_rate);
+        return new SqlDecimal (result);
+    } 
+}
+
+Используется в представлении AllServicesInfo

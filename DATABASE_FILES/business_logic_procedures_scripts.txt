@@ -1,0 +1,142 @@
+1)Процедура(производит запись клиента к мастеру)
+ALTER PROCEDURE dbo.MakeVisit (@lastNameCustomer NVARCHAR(50),
+@firstNameCustomer NVARCHAR(50),
+@middleNameCustomer NVARCHAR(50) = NULL,
+@phoneCustomer CHAR(12),
+@adressCustomer NVARCHAR(50) = NULL,
+@groupService NVARCHAR(50),
+@service NVARCHAR(50),
+@lastNameEmployee NVARCHAR(50),
+@middleNameEmployee NVARCHAR(50),
+@firstNameEmployee NVARCHAR(50),
+@dateVisit DATE,
+@timeVisit TIME(0),
+@result NVARCHAR(50) OUTPUT)
+AS
+BEGIN
+  DECLARE @customId INT
+         ,@servID INT
+         ,@emplID INT
+  IF EXISTS (SELECT
+        *
+      FROM GetFreeMasters(@groupService, @service, @dateVisit, @timeVisit)
+      WHERE last_name = @lastNameEmployee
+      AND middle_name = @middleNameEmployee
+      AND first_name = @firstNameEmployee)
+  BEGIN
+    IF NOT EXISTS (SELECT
+          *
+        FROM Customers c
+        WHERE c.last_name = @lastNameCustomer
+        AND c.first_name = @firstNameCustomer
+        AND c.middle_name = @middleNameCustomer
+        AND c.phone = @phoneCustomer)
+    BEGIN
+      EXECUTE dbo.INS_Customers @lastNameCustomer
+                               ,@firstNameCustomer
+                               ,@middleNameCustomer
+                               ,@adressCustomer
+                               ,@phoneCustomer
+    END
+    SELECT
+      @customId = id
+    FROM Customers
+    WHERE phone = @phoneCustomer
+    SELECT
+      @servID = id
+    FROM [Services]
+    WHERE [name] = @service
+    SELECT
+      @emplID = id
+    FROM [Employees]
+    WHERE last_name = @lastNameEmployee
+    AND first_name = @firstNameEmployee
+    AND middle_name = @middleNameEmployee
+    EXECUTE dbo.INS_Visits @customId
+                          ,@servID
+                          ,@emplID
+                          ,@dateVisit
+                          ,@timeVisit
+                          ,'No'
+    SET @result = 'Visit recorded'
+  END
+  ELSE
+    SET @result = 'Master does not have this service or busy'
+END 
+
+2) Процедура(Изменяет статус оказанной услуги по сотруднику, дате, времени)
+Service_Provided (Yes, No)
+ALTER PROCEDURE dbo.ChangeServiceProvided (@lastNameEmployee NVARCHAR(50),
+@firstNameEmployee NVARCHAR(50),
+@middleNameEmployee NVARCHAR(50),
+@dateVisit DATE,
+@timeVisit TIME(0),
+@changeValue NVARCHAR(3),
+@result NVARCHAR(30) OUTPUT)
+AS
+BEGIN
+  DECLARE @visit_id INT
+
+  SELECT
+    @visit_id = v.id
+  FROM Visits v
+  JOIN Employees e
+    ON e.id = v.employee_id
+      AND e.first_name = @firstNameEmployee
+      AND e.last_name = @lastNameEmployee
+      AND e.middle_name = @middleNameEmployee
+  WHERE v.date_visit = @dateVisit
+  AND v.time_visit = @timeVisit
+
+  IF @visit_id IS NOT NULL
+  BEGIN
+    EXECUTE dbo.UPD_Visits_PK @v_id = @visit_id
+                             ,@service_provided = @changeValue
+    SET @result = 'Update complete'
+  END
+  ELSE
+    SET @result = 'Wrong parametres'
+END
+
+3) Процедура(Обновление даты, времени или удаление визита)
+ALTER PROCEDURE dbo.UPD_Visits_FioEmployee_DT (@lastNameEmployee NVARCHAR(50),
+@firstNameEmployee NVARCHAR(50),
+@middleNameEmployee NVARCHAR(50),
+@dateVisit DATE,
+@timeVisit TIME(0),
+@newDateVisit DATE = NULL,
+@newTimeVisit TIME(0) = NULL,
+@deleteFlag INT,
+@result NVARCHAR(50) OUTPUT)
+AS
+BEGIN
+  DECLARE @id_visit INT
+  SELECT
+    @id_visit = v.id
+  FROM Visits v
+  JOIN Employees e
+    ON e.id = v.employee_id
+      AND e.last_name = @lastNameEmployee
+      AND e.first_name = @firstNameEmployee
+      AND e.middle_name = @middleNameEmployee
+      AND v.date_visit = @dateVisit
+      AND v.time_visit = @timeVisit
+  IF @id_visit IS NOT NULL
+  BEGIN
+    IF @deleteFlag = 0
+    BEGIN
+      EXECUTE dbo.UPD_Visits_PK @v_id = @id_visit
+                               ,@date_visit = @newDateVisit
+                               ,@time_visit = @newTimeVisit
+      SET @result = 'Update success'
+    END
+    ELSE
+    IF @deleteFlag = 1
+    BEGIN
+      EXECUTE dbo.DEL_Visits_PK @id_visit
+      SET @result = 'Delete success'
+    END
+  END
+  ELSE
+    SET @result = 'Wrong parametres'
+END

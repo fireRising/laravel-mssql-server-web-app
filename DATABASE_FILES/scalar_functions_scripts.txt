@@ -1,0 +1,15 @@
+1) Скалярная функция возвращает ожидаемую прибыль каждый день
+ALTER FUNCTION dbo.CountMoneyPerDay ()
+RETURNS INT
+AS
+BEGIN
+  DECLARE @sum INT
+  SELECT
+    @sum = SUM(s.price)
+  FROM Services s
+  JOIN Visits v
+    ON v.service_id = s.id
+      AND v.date_visit = CONVERT(DATE,GETDATE())
+
+  RETURN @sum
+END
