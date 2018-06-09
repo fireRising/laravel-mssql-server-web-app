@@ -8,6 +8,8 @@
 <b>Installation of a driver sqlsrv for connect PHP with MS SQL Server:</b> https://docs.microsoft.com/ru-ru/sql/connect/php/microsoft-php-driver-for-sql-server
 <br>
 
+<b>Structure of the Database(ER-diagrams, phys-diagrams, normalization) in the /DATABASE_FILES/DB_description.docx file</b>
+
 <h4>Get Started</h4>
 <ol>
   <li>Install web server(best with pre-installed PHP: WAMP, MAMP, LAMP)</li>
