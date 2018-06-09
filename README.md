@@ -10,7 +10,6 @@ Database: MS SQL Server
   <li>Customer</li>
 </ul>
 
-<br>
 Laravel Documentation: https://laravel.com/docs/5.5
 <br>
 Laravel lessons: https://laracasts.com/
