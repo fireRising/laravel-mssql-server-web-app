@@ -24,5 +24,5 @@
   <li>Administrator</li>
   <li>Customer</li>
 </ul>
-<b>Registration only for the customer role</b><br>
-<b>Password for the other roles in the /DATABASE_FILES/passwords.txt file</b><br>
+<b>Registration only works for the Customer role</b><br>
+<b>Passwords for the other roles in the /DATABASE_FILES/passwords.txt file</b><br>
