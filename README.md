@@ -3,9 +3,9 @@
 <b>Framework</b>: Laravel 5.4<br>
 <b>Database</b>: MS SQL Server<br>
 
-Laravel Documentation: https://laravel.com/docs/5.5<br>
-Laravel Lessons: https://laracasts.com/<br>
-Installation of a driver sqlsrv for connect PHP with MS SQL Server: https://docs.microsoft.com/ru-ru/sql/connect/php/microsoft-php-driver-for-sql-server
+<b>Laravel Documentation:</b> https://laravel.com/docs/5.5<br>
+<b>Laravel Lessons:</b> https://laracasts.com/<br>
+<b>Installation of a driver sqlsrv for connect PHP with MS SQL Server:</b> https://docs.microsoft.com/ru-ru/sql/connect/php/microsoft-php-driver-for-sql-server
 <br>
 <h4>Available roles:</h4>
 <ul>
